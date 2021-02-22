@@ -10,8 +10,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\Yaml\Yaml;
 
 class TranslationCommand extends Command
 {
@@ -22,7 +20,7 @@ class TranslationCommand extends Command
         $this->setDescription('Synchronize all translation files by one.');
 
         $this->addArgument('locale', InputArgument::REQUIRED, 'Synchronize by this locale.');
-        $this->addOption('directory', 'd', InputOption::VALUE_OPTIONAL, 'Translation files directory.', $parameters->get('translator.default_path'));
+        $this->addOption('directory', 'd', InputOption::VALUE_OPTIONAL, 'Translation files directory.', 'translations');
         $this->addOption('domain', null, InputOption::VALUE_OPTIONAL, 'Translation domain to process. Asterisk means all domains.', '*');
     }
 
