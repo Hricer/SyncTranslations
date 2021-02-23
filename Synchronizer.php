@@ -4,7 +4,7 @@ namespace Hricer\SyncTranslations;
 
 use Symfony\Component\Yaml\Yaml;
 
-class SyncTranslations
+class Synchronizer
 {
     /**
      * @var Finder
@@ -38,7 +38,7 @@ class SyncTranslations
             $masterTranslation = $this->parseFile($master);
 
             foreach ($slaves as $slave) {
-                $synchronized = $this->compareNodes($this->parseFile($slave), $masterTranslation);
+                $synchronized = $this->compareNodes($masterTranslation, $this->parseFile($slave));
                 file_put_contents($slave, $this->dump($synchronized));
 
                 if ($this->createdEvent) {

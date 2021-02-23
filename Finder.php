@@ -31,6 +31,7 @@ class Finder
 
     public function __construct(string $directory, string $domain, string $format = 'yaml')
     {
+        $this->files = [];
         $this->directory = $directory;
         $this->domain = $domain;
 
@@ -51,24 +52,23 @@ class Finder
         if (!$this->files) {
             $glob = sprintf(self::MASK, $this->directory, $this->domain, '*', self::FORMATS);
 
-            $masters = $slaves = $files = [];
+            $masters = $slaves = [];
 
             foreach (glob($glob, GLOB_BRACE) as $file) {
                 preg_match('/^(\w+)\.([a-z]{2})\.([a-z]+)$/', basename($file), $matches);
 
                 if ($matches[2] == $locale) {
-                    $masters[$matches[1]][] = $file;
+                    $masters[$matches[1]] = $file;
                 } else {
                     $slaves[$matches[1]][] = $file;
                 }
             }
 
             foreach ($masters as $domain => $master) {
-                $files[$master] = $slaves[$domain];
+                $this->files[$master] = isset($slaves[$domain]) ? $slaves[$domain] : [];
             }
         }
 
         return $this->files;
     }
 }
-

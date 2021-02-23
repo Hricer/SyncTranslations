@@ -1,7 +1,7 @@
 {
     "name": "hricer/sync-translations",
     "type": "library",
-    "description": "Synchronize all translation files.",
+    "description": "Synchronize all Symfony translation files.",
     "keywords": ["translation", "yaml", "synchronize", "diff"],
     "license": "MIT",
     "authors": [
@@ -11,19 +11,15 @@
         }
     ],
     "require": {
-        "php": ">=7.1.3"
+        "php": ">=7.4"
     },
     "require-dev": {
-        "symfony/console": "^3.4|^4.0|^5.0"
-    },
-    "conflict": {
-        "symfony/console": "<3.4"
+        "symfony/console": "^4.0|^5.0"
     },
     "autoload": {
         "psr-4": { "Hricer\\SyncTranslations\\": "" },
         "exclude-from-classmap": [
             "/Tests/"
         ]
-    },
-    "minimum-stability": "dev"
+    }
 }

@@ -3,7 +3,7 @@
 namespace Hricer\SyncTranslations\Command;
 
 use Hricer\SyncTranslations\Finder;
-use Hricer\SyncTranslations\SyncTranslations;
+use Hricer\SyncTranslations\Synchronizer;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
-class TranslationCommand extends Command
+class SyncTranslationCommand extends Command
 {
     protected static $defaultName = 'translation:sync';
 
@@ -22,6 +22,7 @@ class TranslationCommand extends Command
         $this->addArgument('locale', InputArgument::REQUIRED, 'Synchronize by this locale.');
         $this->addOption('directory', 'd', InputOption::VALUE_OPTIONAL, 'Translation files directory.', 'translations');
         $this->addOption('domain', null, InputOption::VALUE_OPTIONAL, 'Translation domain to process. Asterisk means all domains.', '*');
+        $this->addOption('format', null, InputOption::VALUE_OPTIONAL, 'File format.', 'yaml');
     }
 
     /**
@@ -34,12 +35,13 @@ class TranslationCommand extends Command
         $_directory = $input->getOption('directory');
         $_domain = $input->getOption('domain');
         $_locale = $input->getArgument('locale');
+        $_format = $input->getArgument('format');
 
         $output->writeln('<info>Generate translation files in directory.</info>');
         $output->writeln('<comment>Directory:</comment> '.$_directory);
         $output->write('<comment>Files to change:</comment> ');
 
-        $finder = new Finder($_directory, $_domain, 'yaml');
+        $finder = new Finder($_directory, $_domain, $_format);
         $files = $finder->findFiles($_locale);
 
         if (empty($files)) {
@@ -68,7 +70,7 @@ class TranslationCommand extends Command
 
         $output->writeln('<info>Syncing...</info>');
 
-        $sync = new SyncTranslations($finder, 'en');
+        $sync = new Synchronizer($finder, 'en');
         $sync->setUpdatedCallback(function ($master, $slave) use ($output) {
             $output->writeLn('<comment>'.basename($slave)."</comment> <info>updated by</info> ".basename($master));
         });
