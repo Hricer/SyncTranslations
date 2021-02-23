@@ -37,7 +37,7 @@ class Finder
 
     public function findFiles(string $locale): array
     {
-        if (!$this->files[$locale]) {
+        if (!isset($this->files[$locale])) {
             $glob = sprintf(self::MASK, $this->directory, $this->domain, '*', self::FORMATS);
 
             $masters = $slaves = [];
