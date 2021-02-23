@@ -38,9 +38,6 @@ use Hricer\SyncTranslations\Command\SyncTranslationCommand;
     ->run();
 ```
 
-Example
--------
-
 Usage
 -----
 
@@ -51,8 +48,8 @@ $ php bin/console translation:sync en --domain=messages
 
 It will synchronize all `translations/*.messages.yaml` files by `translations/en.messages.yaml`.
 
-| Options        | Default        | Description  |
-| ------------- |:--------------:| -----:|
+| Options       | Default        | Description  |
+| ------------- |----------------| ------------ |
 | `--domain`    | `*` (all)      | The translation domain name to synchronize. |
 | `--directory` | `translations` | Directory with translation files. |
 | `--format`    | `yaml`         | Only YAML supported. |
