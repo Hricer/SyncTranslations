@@ -25,17 +25,12 @@ class SyncTranslationCommand extends Command
         $this->addOption('format', null, InputOption::VALUE_OPTIONAL, 'File format.', 'yaml');
     }
 
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     * @return int
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $_directory = $input->getOption('directory');
         $_domain = $input->getOption('domain');
+        $_format = $input->getOption('format');
         $_locale = $input->getArgument('locale');
-        $_format = $input->getArgument('format');
 
         $output->writeln('<info>Generate translation files in directory.</info>');
         $output->writeln('<comment>Directory:</comment> '.$_directory);
