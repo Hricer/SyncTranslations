@@ -10,7 +10,7 @@ Install
 
 Step 1: Download the package
 
-`composer require hricer/sync-translations --dev`
+`$ composer require hricer/sync-translations --dev`
 
 Step 2: Regist the Bundle
 
