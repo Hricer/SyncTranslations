@@ -70,7 +70,7 @@ class SyncTranslationCommand extends Command
 
         $output->writeln('<info>Syncing...</info>');
 
-        $sync = new Synchronizer($finder, 'en');
+        $sync = new Synchronizer($finder, $_locale);
         $sync->setUpdatedCallback(function ($master, $slave) use ($output) {
             $output->writeLn('<comment>'.basename($slave)."</comment> <info>updated by</info> ".basename($master));
         });

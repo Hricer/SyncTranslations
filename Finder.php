@@ -9,24 +9,12 @@ class Finder
 
     const MASK = '%s/%s.%s.%s';
 
-    /**
-     * @var string
-     */
     private string $directory;
 
-    /**
-     * @var string
-     */
     private string $domain;
 
-    /**
-     * @var string
-     */
     private string $format;
 
-    /**
-     * @var array<array>
-     */
     private array $files;
 
     public function __construct(string $directory, string $domain, string $format = 'yaml')
@@ -49,7 +37,7 @@ class Finder
 
     public function findFiles(string $locale): array
     {
-        if (!$this->files) {
+        if (!$this->files[$locale]) {
             $glob = sprintf(self::MASK, $this->directory, $this->domain, '*', self::FORMATS);
 
             $masters = $slaves = [];
@@ -65,10 +53,10 @@ class Finder
             }
 
             foreach ($masters as $domain => $master) {
-                $this->files[$master] = isset($slaves[$domain]) ? $slaves[$domain] : [];
+                $this->files[$locale][$master] = isset($slaves[$domain]) ? $slaves[$domain] : [];
             }
         }
 
-        return $this->files;
+        return $this->files[$locale];
     }
 }
