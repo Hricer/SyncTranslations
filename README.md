@@ -1,9 +1,52 @@
 Sync Translation Files
 ======================
 
-A command for synchronize all Symfony translation files according to one locale file (etc. `messages.en.yaml`).
+A command for synchronize all Symfony translation files according to one locale file.
 
 Supports YAML format only.
+
+Usage
+-----
+
+Imagine you make changes in your main locale, e.g. `message.en.yaml`:
+
+```diff
+common:
+    yes: Yes
++    no: No
+    actions:
+        close: Close
+-        send: Send
+    toast:
+        save: 'Successfully saved.'
+```
+
+Now you need synchronize all `translations/messages.*.yaml` files by `translations/messages.en.yaml` (add new or remove old lines). Type in terminal:
+```
+$ php bin/console translation:sync en --domain=messages
+```
+
+| Options       | Default        | Description  |
+| ------------- |----------------| ------------ |
+| `--domain`    | `*` (all)      | The translation domain name to synchronize. |
+| `--directory` | `translations` | Directory with translation files. |
+| `--format`    | `yaml`         | Only YAML supported. |
+
+
+Command will update all `message.*.yaml` (exclude en). For exmaple `message.cs.yaml` :
+
+
+```diff
+common:
+    yes: Ano
++    no: No
+    actions:
+        close: Zavřít
+-        send: Odeslat
+    toast:
+        save: 'Úspešně uloženo.'
+```
+
 
 Install
 -------
@@ -37,19 +80,3 @@ use Hricer\SyncTranslations\Command\SyncTranslationCommand;
     ->setDefaultCommand('translation:sync', true)
     ->run();
 ```
-
-Usage
------
-
-In terminal:
-```
-$ php bin/console translation:sync en --domain=messages
-```
-
-It will synchronize all `translations/*.messages.yaml` files by `translations/en.messages.yaml`.
-
-| Options       | Default        | Description  |
-| ------------- |----------------| ------------ |
-| `--domain`    | `*` (all)      | The translation domain name to synchronize. |
-| `--directory` | `translations` | Directory with translation files. |
-| `--format`    | `yaml`         | Only YAML supported. |
