@@ -13,10 +13,10 @@ Imagine you make changes in your main locale, e.g. `message.en.yaml`:
 ```diff
 common:
     yes: Yes
-+    no: No
++   no: No
     actions:
         close: Close
--        send: Send
+-       send: Send
     toast:
         save: 'Successfully saved.'
 ```
@@ -39,10 +39,10 @@ Command will update all `message.*.yaml` (exclude en). For exmaple `message.cs.y
 ```diff
 common:
     yes: Ano
-+    no: No
++   no: No
     actions:
         close: Zavřít
--        send: Odeslat
+-       send: Odeslat
     toast:
         save: 'Úspešně uloženo.'
 ```

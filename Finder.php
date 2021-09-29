@@ -2,19 +2,14 @@
 
 namespace Hricer\SyncTranslations;
 
-
 class Finder
 {
     const FORMATS = '{yml,yaml}';
-
     const MASK = '%s/%s.%s.%s';
 
     private string $directory;
-
     private string $domain;
-
     private string $format;
-
     private array $files;
 
     public function __construct(string $directory, string $domain, string $format = 'yaml')
@@ -53,7 +48,7 @@ class Finder
             }
 
             foreach ($masters as $domain => $master) {
-                $this->files[$locale][$master] = isset($slaves[$domain]) ? $slaves[$domain] : [];
+                $this->files[$locale][$master] = $slaves[$domain] ?? [];
             }
         }
 

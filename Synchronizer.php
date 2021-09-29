@@ -6,14 +6,7 @@ use Symfony\Component\Yaml\Yaml;
 
 class Synchronizer
 {
-    /**
-     * @var Finder
-     */
     private Finder $finder;
-
-    /**
-     * @var string
-     */
     private string $locale;
 
     /**
