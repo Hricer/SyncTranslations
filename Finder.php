@@ -38,7 +38,11 @@ class Finder
             $masters = $slaves = [];
 
             foreach (glob($glob, GLOB_BRACE) as $file) {
-                preg_match('/^(\w+)\.([a-z]{2})\.([a-z]+)$/', basename($file), $matches);
+                preg_match('/^([a-zA-Z0-9_\-+]+)\.([a-z]{2})\.([a-z]+)$/', basename($file), $matches);
+
+                if (empty($matches)) {
+                    continue;
+                }
 
                 if ($matches[2] == $locale) {
                     $masters[$matches[1]] = $file;
