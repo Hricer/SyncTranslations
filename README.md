@@ -1,14 +1,15 @@
 Sync Translation Files
 ======================
 
-A command for synchronize all Symfony translation files according to one locale file.
+The command for synchronize all translation files according to one locale file. This will ensure that all translation files contain the same keys.
 
-Supports YAML format only.
+This allows the developer to manage only one language. Before deploy the application into production,
+the developer executes synchronization for other languages.
 
 Usage
 -----
 
-Imagine you make changes in your main locale, e.g. `message.en.yaml`:
+Imagine you made changes to the main locale file, e.g. `messages.en.yaml`:
 
 ```diff
 common:
@@ -21,20 +22,22 @@ common:
         save: 'Successfully saved.'
 ```
 
-Now you need synchronize all `translations/messages.*.yaml` files by `translations/messages.en.yaml` (add new or remove old lines). Type in terminal:
+Now you need synchronize all `messages.*.yaml` files by `messages.en.yaml` (add new or remove old lines). Type into the terminal:
 ```
 $ php bin/console translation:sync en --domain=messages
 ```
 
-| Options       | Default        | Description  |
-| ------------- |----------------| ------------ |
-| `--domain`    | `*` (all)      | The translation domain name to synchronize. |
-| `--directory` | `translations` | Directory with translation files. |
-| `--format`    | `yaml`         | Only YAML supported. |
+| Options       | Default        | Description                                  |
+|---------------|----------------|----------------------------------------------|
+| `--domain`    | `*` (all)      | The translation domain name to synchronize.  |
+| `--directory` | `translations` | Directory with translation files.            |
+| `--format`    | `yaml`         | Only YAML supported.                         |
+| `--deepl`     | `null`         | Optional DeepL API key for auto translation. |
 
 
-Command will update all `message.*.yaml` (exclude en). For exmaple `message.cs.yaml` :
+The command will update all `messages.*.yaml` (exclude en). 
 
+For exmaple `message.cs.yaml` :
 
 ```diff
 common:
@@ -46,6 +49,8 @@ common:
     toast:
         save: 'Úspešně uloženo.'
 ```
+
+You can use `--deepl` parameter for auto translate all new lines.
 
 
 Install

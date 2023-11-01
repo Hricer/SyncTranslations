@@ -2,6 +2,8 @@
 
 namespace Hricer\SyncTranslations;
 
+use Exception;
+
 class Finder
 {
     const FORMATS = '{yml,yaml}';
@@ -19,10 +21,15 @@ class Finder
         $this->domain = $domain;
 
         if ($format != 'yaml') {
-            throw new \Exception('Only Yaml format supported.');
+            Finder::throwFormatException();
         }
 
         $this->format = $format;
+    }
+
+    static function throwFormatException(): never
+    {
+        throw new Exception('Only Yaml format supported.');
     }
 
     public function getFormat(): string
@@ -30,12 +37,14 @@ class Finder
         return $this->format;
     }
 
+    /**
+     * @return File[]
+     */
     public function findFiles(string $locale): array
     {
         if (!isset($this->files[$locale])) {
             $glob = sprintf(self::MASK, $this->directory, $this->domain, '*', self::FORMATS);
-
-            $masters = $slaves = [];
+            $files = [];
 
             foreach (glob($glob, GLOB_BRACE) as $file) {
                 preg_match('/^([a-zA-Z0-9_\-+]+)\.([a-z]{2})\.([a-z]+)$/', basename($file), $matches);
@@ -44,18 +53,36 @@ class Finder
                     continue;
                 }
 
-                if ($matches[2] == $locale) {
-                    $masters[$matches[1]] = $file;
-                } else {
-                    $slaves[$matches[1]][] = $file;
-                }
+                $files[] = new File($file, $matches[1], $matches[2], strtolower($matches[3]), $matches[2] === $locale);
             }
 
-            foreach ($masters as $domain => $master) {
-                $this->files[$locale][$master] = $slaves[$domain] ?? [];
+            foreach ($this->findMasters($files) as $master) {
+                foreach ($this->findSlavesForDomain($files, $master->domain) as $slave) {
+                    $master->addSlave($slave);
+                }
+
+                $this->files[$locale][] = $master;
             }
         }
 
         return $this->files[$locale];
+    }
+
+    /**
+     * @param File[] $files
+     * @return File[]
+     */
+    private function findMasters(array $files): array
+    {
+        return array_filter($files, fn (File $file) => $file->master);
+    }
+
+    /**
+     * @param File[] $files
+     * @return File[]
+     */
+    private function findSlavesForDomain(array $files, string $domain): array
+    {
+        return array_filter($files, fn (File $file) => !$file->master && $file->domain === $domain);
     }
 }
