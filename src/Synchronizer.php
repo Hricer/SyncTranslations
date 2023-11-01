@@ -60,7 +60,7 @@ class Synchronizer
     private function dump(array $content): string
     {
         return match ($this->finder->getFormat()) {
-            'yaml' => Yaml::dump($content, 4),
+            'yaml' => Yaml::dump($content, 4, 4, Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK),
             default => Finder::throwFormatException(),
         };
     }

@@ -4,6 +4,7 @@ namespace Hricer\SyncTranslations;
 
 use DeepL\DeepLException;
 use DeepL\Language;
+use DeepL\LanguageCode;
 use DeepL\Translator;
 
 class TranslatorManager
@@ -23,7 +24,7 @@ class TranslatorManager
     public function getSupportedLanguages(): array
     {
         if (!$this->supportedLanguages) {
-            $this->supportedLanguages = array_map(fn (Language $language) => $language->code, $this->deepL->getTargetLanguages());
+            $this->supportedLanguages = array_map(fn (Language $language) => LanguageCode::standardizeLanguageCode($language->code), $this->deepL->getTargetLanguages());
         }
 
         return $this->supportedLanguages;
@@ -38,6 +39,12 @@ class TranslatorManager
         if (count($values) <= 0) {
             return;
         }
+
+        $targetLanguage = match($targetLanguage) {
+            LanguageCode::ENGLISH => LanguageCode::ENGLISH_AMERICAN,
+            LanguageCode::PORTUGUESE => LanguageCode::PORTUGUESE_EUROPEAN,
+            default => $targetLanguage,
+        };
 
         if (!in_array($targetLanguage, $this->getSupportedLanguages(), true)) {
             return;
